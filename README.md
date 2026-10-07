@@ -12,7 +12,11 @@ A one-minute animated video based on David Brooks's essay "A Surprising Route to
 
 One figure follows one light from a night at the ballpark to a dawn on a mountain, through the essay's five stages: enchantment, curiosity, the gap, mastery and endurance. The narration is a paraphrase of the essay, not its text.
 
-Everything is generated locally on a Mac, with no paid APIs.
+## Made with Claude Code
+
+This video was made entirely with [Claude Code](https://claude.com/claude-code), Anthropic's coding agent. I gave it the essay and directed the format, the style and the revisions. Claude Code wrote the narration script, generated the voice, wrote the animation and music code, rendered the frames, mixed the audio and checked the result. No video editor was used.
+
+Everything is generated locally on a Mac, with no paid APIs for voice, music or visuals.
 
 ## How it is made
 
