@@ -1,3 +1,5 @@
+
+
 # The stages of a calling
 
 A one-minute animated video based on David Brooks's essay "A Surprising Route to the Best Life Possible" (The New York Times, 27 March 2025). The finished video is [`out/calling.mp4`](out/calling.mp4).
