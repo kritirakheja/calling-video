@@ -1,0 +1,5 @@
+kokoro>=0.9
+soundfile
+mlx-whisper
+transformers>=4.44
+tokenizers>=0.19

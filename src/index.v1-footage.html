@@ -1,0 +1,264 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  :root { --bg: #0E1116; --ink: #F4F1EA; --dim: rgba(244, 241, 234, .58); --faint: rgba(244, 241, 234, .22); --accent: #FF6A3D; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1920px; height: 1080px; background: transparent; overflow: hidden; }
+  body { font-family: "Avenir Next", "Helvetica Neue", sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
+  #bg { position: absolute; inset: 0; background: var(--bg); }
+  .abs { position: absolute; opacity: 0; }
+  .label { font-size: 26px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; }
+  .shadow { text-shadow: 0 2px 24px rgba(0, 0, 0, .55); }
+
+  /* opening */
+  #year { left: 136px; bottom: 200px; font-size: 330px; font-weight: 700; letter-spacing: -8px; line-height: .9; }
+  #place { left: 144px; bottom: 520px; color: var(--ink); }
+  #quote { left: 0; right: 0; top: 400px; text-align: center; font-size: 112px; font-weight: 600; letter-spacing: -2px; opacity: 1; }
+  #quoteBy { left: 0; right: 0; top: 580px; text-align: center; color: var(--ink); }
+  .w { display: inline-block; opacity: 0; white-space: pre; }
+
+  /* thesis */
+  #byline { left: 144px; top: 380px; color: var(--accent); }
+  #thesis { left: 140px; top: 440px; font-size: 104px; font-weight: 600; letter-spacing: -2px; line-height: 1.08; }
+
+  /* rail */
+  #rail { left: 140px; right: 140px; top: 78px; }
+  #rail .items { display: flex; }
+  #rail .item { flex: 1; font-size: 22px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); }
+  #rail .track { margin-top: 20px; height: 2px; background: var(--faint); position: relative; }
+  #rail .fill { position: absolute; left: 0; top: 0; height: 2px; width: 0; background: var(--accent); }
+
+  /* stages */
+  .stage { left: 140px; top: 330px; width: 900px; opacity: 1; }
+  .stage > * { opacity: 0; }
+  .stage .num { font-size: 34px; font-weight: 600; color: var(--accent); letter-spacing: .1em; }
+  .stage .title { font-size: 168px; font-weight: 700; letter-spacing: -5px; line-height: 1; margin-top: 14px; }
+  .stage .sub { font-size: 44px; font-weight: 500; color: var(--dim); line-height: 1.3; margin-top: 34px; max-width: 800px; }
+  #s5 .sub { color: var(--ink); }
+  svg.motif { left: 1090px; top: 300px; width: 700px; height: 520px; opacity: 1; overflow: visible; }
+  svg.motif text { font-family: inherit; font-size: 27px; font-weight: 500; fill: var(--dim); }
+  #count { left: 136px; top: 716px; display: flex; align-items: baseline; gap: 26px; }
+  #count .n { font-size: 190px; font-weight: 700; letter-spacing: -5px; line-height: 1; color: var(--accent); font-variant-numeric: tabular-nums; }
+  #count .u { font-size: 60px; font-weight: 600; }
+
+  /* closing */
+  .closing { left: 140px; right: 140px; font-weight: 600; letter-spacing: -2px; line-height: 1.1; opacity: 1; }
+  #close1 { top: 330px; font-size: 76px; }
+  #close2 { top: 450px; font-size: 104px; }
+  #close2 .hl { color: var(--accent); }
+
+  /* end card */
+  #endLabel { left: 144px; top: 330px; color: var(--accent); }
+  #endList { left: 140px; top: 400px; font-size: 62px; font-weight: 600; letter-spacing: -1px; opacity: 1; }
+  #endList span { opacity: 0; display: inline-block; }
+  #endList .sep { color: var(--faint); margin: 0 22px; font-weight: 400; }
+  #credits { left: 144px; bottom: 96px; font-size: 24px; line-height: 1.6; color: var(--dim); }
+
+  #cap { position: absolute; left: 0; right: 0; bottom: 62px; text-align: center; font-size: 36px; font-weight: 500; }
+  #cap .u { color: var(--dim); }
+</style>
+</head>
+<body>
+<div id="bg"></div>
+
+<div id="place" class="abs label shadow">Tokyo &middot; a ballpark &middot; a beer</div>
+<div id="year" class="abs shadow">1978</div>
+<div id="quote" class="abs shadow"></div>
+<div id="quoteBy" class="abs label shadow">Haruki Murakami</div>
+
+<div id="byline" class="abs label">David Brooks &middot; The New York Times</div>
+<div id="thesis" class="abs">Every calling<br>begins this way.</div>
+
+<div id="rail" class="abs">
+  <div class="items">
+    <div class="item">01 Enchantment</div><div class="item">02 Curiosity</div><div class="item">03 The gap</div><div class="item">04 Mastery</div><div class="item">05 Endurance</div>
+  </div>
+  <div class="track"><div class="fill"></div></div>
+</div>
+
+<div id="s1" class="abs stage"><div class="num">01</div><div class="title">Enchantment</div><div class="sub">A small moment you didn&rsquo;t choose.</div></div>
+<div id="s2" class="abs stage"><div class="num">02</div><div class="title">Curiosity</div><div class="sub">Wanting to know everything.</div></div>
+<div id="s3" class="abs stage"><div class="num">03</div><div class="title">The gap</div><div class="sub">Between how good you are and how good you&rsquo;d like to be.</div></div>
+<div id="s4" class="abs stage"><div class="num">04</div><div class="title">Mastery</div><div class="sub">Loving the long hours as much as the result.</div></div>
+<div id="s5" class="abs stage shadow"><div class="num">05</div><div class="title">Endurance</div><div class="sub">What carries you through the pain.</div></div>
+
+<svg class="abs motif" viewBox="0 0 700 520">
+  <g id="m12">
+    <circle class="ring" cx="350" cy="260" r="16" fill="none" stroke="#F4F1EA" stroke-width="2" opacity="0"/>
+    <circle class="ring" cx="350" cy="260" r="16" fill="none" stroke="#F4F1EA" stroke-width="2" opacity="0"/>
+    <circle class="ring" cx="350" cy="260" r="16" fill="none" stroke="#F4F1EA" stroke-width="2" opacity="0"/>
+    <circle class="ring" cx="350" cy="260" r="16" fill="none" stroke="#F4F1EA" stroke-width="2" opacity="0"/>
+    <circle class="ring" cx="350" cy="260" r="16" fill="none" stroke="#F4F1EA" stroke-width="2" opacity="0"/>
+    <circle id="dot" cx="350" cy="260" r="16" fill="#FF6A3D" opacity="0"/>
+  </g>
+  <g id="m3" opacity="0">
+    <g id="want" opacity="0">
+      <text x="60" y="112">where you&rsquo;d like to be</text>
+      <line x1="60" y1="140" x2="640" y2="140" stroke="#F4F1EA" stroke-width="3"/>
+    </g>
+    <line id="dash" x1="350" y1="152" x2="350" y2="388" stroke="#F4F1EA" stroke-opacity=".45" stroke-width="2" stroke-dasharray="6 10" opacity="0"/>
+    <g id="are" opacity="0">
+      <line x1="60" y1="400" x2="640" y2="400" stroke="#FF6A3D" stroke-width="3"/>
+      <text x="60" y="446">where you are</text>
+    </g>
+  </g>
+  <g id="m4" opacity="0"></g>
+</svg>
+
+<div id="count" class="abs shadow"><div class="n">0</div><div class="u">marathons</div></div>
+
+<div id="close1" class="abs closing shadow"></div>
+<div id="close2" class="abs closing shadow"></div>
+
+<div id="endLabel" class="abs label">The stages of a calling</div>
+<div id="endList" class="abs"></div>
+<div id="credits" class="abs">
+  Based on &ldquo;A Surprising Route to the Best Life Possible&rdquo; by David Brooks, The New York Times, 27 March 2025<br>
+  Footage, CC BY, via YouTube: 7C Elements 4K Stock Footage &middot; Penguin Hermit &middot; Free Copyright Videos
+</div>
+
+<div id="cap" class="shadow"></div>
+
+<script src="../node_modules/gsap/dist/gsap.min.js"></script>
+<script>
+const L = 1.2;                       // lead-in before the narration starts
+const A = s => s + L;                // audio time -> video time
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const tl = gsap.timeline({ paused: true, defaults: { ease: 'power2.out' } });
+
+const show = (sel, t, d = .6, y = 24) => { gsap.set(sel, { y }); tl.to(sel, { opacity: 1, y: 0, duration: d }, t); };
+const hide = (sel, t, d = .4) => tl.to(sel, { opacity: 0, duration: d, ease: 'power1.in' }, t);
+
+// words that appear as they are spoken; times are audio seconds
+function spoken(sel, items) {
+  const el = $(sel);
+  items.forEach(([text, t, cls]) => {
+    const s = document.createElement('span');
+    s.className = 'w' + (cls ? ' ' + cls : '');
+    s.textContent = text + ' ';
+    el.appendChild(s);
+    gsap.set(s, { y: 18 });
+    tl.to(s, { opacity: 1, y: 0, duration: .32 }, A(t) - .06);
+  });
+}
+
+// footage shows through wherever #bg is not fully opaque
+tl.to('#bg', { opacity: .34, duration: 1.0, ease: 'power1.inOut' }, 0);
+tl.to('#bg', { opacity: .62, duration: .3 }, 10.0);
+tl.to('#bg', { opacity: 1, duration: .4 }, 12.2);
+tl.to('#bg', { opacity: .5, duration: .9, ease: 'power1.inOut' }, 42.3);
+tl.to('#bg', { opacity: .4, duration: .8, ease: 'power1.inOut' }, 49.0);
+tl.to('#bg', { opacity: 1, duration: .7, ease: 'power1.inOut' }, 54.5);
+
+// opening
+show('#year', A(.3), .8, 40);
+show('#place', A(2.9));
+hide('#year', A(8.5), .35); hide('#place', A(8.5), .35);
+spoken('#quote', [['I', 9.14], ['could', 9.22], ['try', 9.38], ['writing', 9.6], ['a', 9.96], ['novel.', 10.14]]);
+show('#quoteBy', A(10.45), .4, 0);
+hide('#quote', A(10.95), .3); hide('#quoteBy', A(10.95), .3);
+
+// thesis
+show('#byline', A(11.4), .5, 0);
+show('#thesis', A(12.1));
+hide('#byline', A(15.0), .3); hide('#thesis', A(15.0), .3);
+
+// rail + stages: [id, in, sub, out]
+const stages = [['#s1', 15.38, 15.9, 18.1], ['#s2', 18.9, 21.9, 24.1], ['#s3', 25.7, 26.2, 32.5], ['#s4', 35.5, 37.3, 40.8], ['#s5', 42.0, 42.9, 47.7]];
+const railIn = [15.38, 18.9, 25.7, 33.0, 42.0];
+show('#rail', A(14.2), .6, -12);
+$$('#rail .item').forEach((it, i) => {
+  tl.to(it, { color: '#FF6A3D', duration: .4 }, A(railIn[i]));
+  if (i < 4) tl.to(it, { color: '#F4F1EA', duration: .4 }, A(railIn[i + 1]));
+  tl.to('#rail .fill', { width: (i * 20 + 12) + '%', duration: .8, ease: 'power2.inOut' }, A(railIn[i]));
+});
+hide('#rail', A(41.2));
+stages.forEach(([id, tin, tsub, tout]) => {
+  show(id + ' .num', A(tin), .4, 0);
+  show(id + ' .title', A(tin), .6, 36);
+  show(id + ' .sub', A(tsub), .6, 16);
+  hide(id + ' > *', A(tout), .35);
+});
+
+// 01 a spark, 02 it spreads
+gsap.set('#dot', { scale: 0, transformOrigin: '50% 50%' });
+tl.to('#dot', { opacity: 1, scale: 1, duration: .5, ease: 'back.out(2.5)' }, A(15.38));
+const rings = $$('.ring');
+const ring = (el, t, r, d) => tl.fromTo(el, { attr: { r: 16 }, opacity: .7 }, { attr: { r }, opacity: 0, duration: d, ease: 'power1.out', immediateRender: false }, t);
+ring(rings[0], A(15.45), 130, 1.8);
+[0, 1, 2, 3].forEach(i => ring(rings[i + 1], A(18.9) + i * 1.05, 250, 2.6));
+hide('#m12', A(24.3), .4);
+
+// 03 the gap, then 04 closing it
+tl.to('#m3', { opacity: 1, duration: .01 }, A(25.6));
+tl.to('#are', { opacity: 1, duration: .5 }, A(26.3));
+tl.to('#want', { opacity: 1, duration: .5 }, A(27.5));
+tl.to('#dash', { opacity: 1, duration: .5 }, A(28.3));
+tl.to('#are', { y: -70, duration: 1.4, ease: 'power2.inOut' }, A(30.7));
+tl.to('#dash', { attr: { y2: 318 }, duration: 1.4, ease: 'power2.inOut' }, A(30.7));
+tl.to('#are', { y: -160, duration: 1.6, ease: 'power2.inOut' }, A(33.1));
+tl.to('#dash', { attr: { y2: 228 }, duration: 1.6, ease: 'power2.inOut' }, A(33.1));
+hide('#m3', A(36.9), .4);
+
+// the long hours: one mark per day
+const NS = 'http://www.w3.org/2000/svg', m4 = $('#m4'), COLS = 12, ROWS = 6;
+for (let i = 0; i < COLS * ROWS; i++) {
+  const r = document.createElementNS(NS, 'rect');
+  r.setAttribute('x', 62 + (i % COLS) * 49); r.setAttribute('y', 96 + Math.floor(i / COLS) * 58);
+  r.setAttribute('width', 6); r.setAttribute('height', 36); r.setAttribute('rx', 3);
+  r.setAttribute('fill', i === COLS * ROWS - 1 ? '#FF6A3D' : '#F4F1EA'); r.setAttribute('opacity', 0);
+  m4.appendChild(r);
+  tl.to(r, { opacity: i === COLS * ROWS - 1 ? 1 : .8, duration: .2 }, A(37.4) + i * (2.6 / (COLS * ROWS)));
+}
+tl.to('#m4', { opacity: 1, duration: .01 }, A(37.3));
+hide('#m4', A(40.8), .35);
+
+// 05 endurance
+const n = { v: 0 }, nEl = $('#count .n');
+show('#count', A(45.3), .5, 20);
+tl.to(n, { v: 23, duration: 1.0, ease: 'power2.out', onUpdate: () => { nEl.textContent = Math.round(n.v); } }, A(45.4));
+hide('#count', A(47.7), .35);
+
+// closing lines
+spoken('#close1', [['The', 48.7], ['real', 48.9], ['prize', 49.2], ['was', 49.56], ['never', 49.88], ['the', 50.22], ['finish', 50.48], ['line.', 50.74]]);
+tl.to('#close1', { opacity: .6, duration: .5 }, A(51.4));
+spoken('#close2', [["It's", 51.64], ['the', 51.9, 'hl'], ['person', 52.04, 'hl'], ['you', 52.34, 'hl'], ['become', 52.58, 'hl'], ['on', 52.88], ['the', 53.04], ['way', 53.14], ['there.', 53.3]]);
+hide('#close1', A(55.0), .5); hide('#close2', A(55.0), .5);
+
+// end card
+show('#endLabel', 56.5, .5, 0);
+const list = $('#endList');
+['Enchantment', 'Curiosity', 'The gap', 'Mastery', 'Endurance'].forEach((name, i) => {
+  if (i) { const s = document.createElement('span'); s.className = 'sep'; s.textContent = '/'; list.appendChild(s); tl.to(s, { opacity: 1, duration: .3 }, 56.7 + i * .18); }
+  const s = document.createElement('span'); s.textContent = name; list.appendChild(s);
+  gsap.set(s, { y: 14 }); tl.to(s, { opacity: 1, y: 0, duration: .4 }, 56.7 + i * .18);
+});
+show('#credits', 57.3, .6, 0);
+tl.to(['#endLabel', '#endList', '#credits'], { opacity: 0, duration: .45, ease: 'power1.in' }, 59.5);
+tl.set({}, {}, 60);
+
+// captions, hidden while the big type is already showing the spoken words
+const MUTE = [[9.0, 11.2], [48.2, 54.6]];
+const chunks = [];
+(window.WORDS || []).forEach(w => {
+  const c = chunks[chunks.length - 1];
+  const chars = c ? c.reduce((n, x) => n + x.w.length + 1, 0) : 0;
+  if (!c || /[.?!]$/.test(c[c.length - 1].w) || (/[,:]$/.test(c[c.length - 1].w) && c.length >= 3) || chars + w.w.length > 50) chunks.push([w]); else c.push(w);
+});
+const cap = $('#cap');
+function caption(t) {
+  const a = t - L;
+  const i = chunks.findIndex((c, k) => a >= c[0].s - .1 && a < Math.min(c[c.length - 1].e + .7, k + 1 < chunks.length ? chunks[k + 1][0].s - .1 : 1e9));
+  if (i < 0 || MUTE.some(([s, e]) => a >= s && a < e)) { cap.innerHTML = ''; return; }
+  cap.innerHTML = chunks[i].map(w => `<span class="${a >= w.s - .05 ? '' : 'u'}">${w.w}</span>`).join(' ');
+}
+
+window.seek = t => { tl.time(t); caption(t); };
+window.seek(0);
+window.ready = true;
+</script>
+</body>
+</html>

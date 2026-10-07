@@ -1,0 +1,432 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  :root { --ink: #F4F1EA; --dim: rgba(244, 241, 234, .7); --faint: rgba(244, 241, 234, .26); --accent: #FF7A4D; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1920px; height: 1080px; background: #070B1C; overflow: hidden; }
+  body { font-family: "Avenir Next", "Helvetica Neue", sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; text-shadow: 0 2px 22px rgba(4, 6, 16, .6); }
+  canvas { position: absolute; left: 0; top: 0; }
+  .abs { position: absolute; opacity: 0; }
+  .label { font-size: 26px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; }
+  .w { display: inline-block; opacity: 0; white-space: pre; }
+
+  #place { left: 144px; top: 150px; color: var(--dim); }
+  #year { left: 136px; top: 186px; font-size: 230px; font-weight: 700; letter-spacing: -6px; line-height: 1; }
+  #quote { left: 0; right: 0; top: 216px; text-align: center; font-size: 96px; font-weight: 600; letter-spacing: -2px; opacity: 1; }
+  #quoteBy { left: 0; right: 0; top: 364px; text-align: center; color: var(--dim); }
+  #byline { left: 144px; top: 184px; color: var(--accent); }
+  #thesis { left: 140px; top: 236px; font-size: 92px; font-weight: 600; letter-spacing: -2px; line-height: 1.08; }
+
+  #rail { left: 140px; right: 140px; top: 70px; text-shadow: none; }
+  #rail .items { display: flex; }
+  #rail .item { flex: 1; font-size: 21px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); }
+  #rail .track { margin-top: 18px; height: 2px; background: var(--faint); position: relative; }
+  #rail .fill { position: absolute; left: 0; top: 0; height: 2px; width: 0; background: var(--accent); }
+
+  .stage { left: 140px; top: 172px; width: 980px; opacity: 1; }
+  .stage > * { opacity: 0; }
+  .stage .num { font-size: 30px; font-weight: 600; color: var(--accent); letter-spacing: .1em; }
+  .stage .title { font-size: 128px; font-weight: 700; letter-spacing: -4px; line-height: 1; margin-top: 10px; }
+  .stage .sub { font-size: 40px; font-weight: 500; color: var(--dim); line-height: 1.3; margin-top: 24px; max-width: 760px; }
+  #count { left: 136px; top: 478px; display: flex; align-items: baseline; gap: 22px; }
+  #count .n { font-size: 150px; font-weight: 700; letter-spacing: -4px; line-height: 1; color: var(--accent); font-variant-numeric: tabular-nums; }
+  #count .u { font-size: 50px; font-weight: 600; }
+
+  .closing { left: 140px; right: 140px; font-weight: 600; letter-spacing: -2px; line-height: 1.1; opacity: 1; }
+  #close1 { top: 150px; font-size: 68px; }
+  #close2 { top: 250px; font-size: 100px; }
+  #close2 .hl { color: #FFD9C2; }
+
+  #endLabel { left: 144px; top: 160px; color: #FFD9C2; }
+  #endList { left: 140px; top: 220px; font-size: 58px; font-weight: 600; letter-spacing: -1px; opacity: 1; }
+  #endList span { opacity: 0; display: inline-block; }
+  #endList .sep { color: var(--faint); margin: 0 20px; font-weight: 400; }
+  #credits { left: 144px; bottom: 64px; font-size: 24px; color: var(--dim); text-shadow: none; }
+
+  #cap { position: absolute; left: 0; right: 0; bottom: 58px; text-align: center; font-size: 36px; font-weight: 500; text-shadow: 0 2px 14px rgba(4, 6, 16, .9); }
+  #cap .u { color: rgba(244, 241, 234, .5); }
+</style>
+</head>
+<body>
+<canvas id="c" width="1920" height="1080"></canvas>
+
+<div id="place" class="abs label">Tokyo &middot; a ballpark &middot; a beer</div>
+<div id="year" class="abs">1978</div>
+<div id="quote" class="abs"></div>
+<div id="quoteBy" class="abs label">Haruki Murakami</div>
+<div id="byline" class="abs label">David Brooks &middot; The New York Times</div>
+<div id="thesis" class="abs">Every calling<br>begins this way.</div>
+
+<div id="rail" class="abs">
+  <div class="items">
+    <div class="item">01 Enchantment</div><div class="item">02 Curiosity</div><div class="item">03 The gap</div><div class="item">04 Mastery</div><div class="item">05 Endurance</div>
+  </div>
+  <div class="track"><div class="fill"></div></div>
+</div>
+
+<div id="s1" class="abs stage"><div class="num">01</div><div class="title">Enchantment</div><div class="sub">A small moment you didn&rsquo;t choose.</div></div>
+<div id="s2" class="abs stage"><div class="num">02</div><div class="title">Curiosity</div><div class="sub">Wanting to know everything.</div></div>
+<div id="s3" class="abs stage"><div class="num">03</div><div class="title">The gap</div><div class="sub">Between how good you are and how good you&rsquo;d like to be.</div></div>
+<div id="s4" class="abs stage"><div class="num">04</div><div class="title">Mastery</div><div class="sub">Loving the long hours as much as the result.</div></div>
+<div id="s5" class="abs stage"><div class="num">05</div><div class="title">Endurance</div><div class="sub">What carries you through the pain.</div></div>
+<div id="count" class="abs"><div class="n">0</div><div class="u">marathons</div></div>
+
+<div id="close1" class="abs closing"></div>
+<div id="close2" class="abs closing"></div>
+
+<div id="endLabel" class="abs label">The stages of a calling</div>
+<div id="endList" class="abs"></div>
+<div id="credits" class="abs">Based on &ldquo;A Surprising Route to the Best Life Possible&rdquo; by David Brooks, The New York Times, 27 March 2025</div>
+
+<div id="cap"></div>
+
+<script src="../node_modules/gsap/dist/gsap.min.js"></script>
+<script>
+// ---------------------------------------------------------------- helpers
+const W = 1920, H = 1080, AY = 730;   // AY: screen row the camera's y is pinned to
+const L = 1.2, A = s => s + L;        // narration lead-in; audio time -> video time
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const ctx = $('#c').getContext('2d');
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const lerp = (a, b, u) => a + (b - a) * u;
+const ss = (a, b, x) => { const u = clamp((x - a) / (b - a)); return u * u * (3 - 2 * u); };
+const hex = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+const mix = (a, b, u) => a.map((v, i) => lerp(v, b[i], u));
+const rgb = (c, a = 1) => `rgba(${c[0] | 0},${c[1] | 0},${c[2] | 0},${a})`;
+function rng(seed) { return () => { seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+
+const INK = [236, 231, 221], EMBER = [255, 122, 77], WARM = [255, 205, 170], GROUND = [7, 10, 20];
+
+// ---------------------------------------------------------------- world
+// flat plain, then one long climb from x=3000 to a ridge at x=7000
+function ground(x) {
+  const u = clamp((x - 3000) / 4000);
+  return -1400 * u * u * (3 - 2 * u)
+    + ss(300, 900, x) * (7 * Math.sin(x / 173) + 4 * Math.sin(x / 61 + 1))
+    + ss(3000, 3600, x) * (1 - ss(6800, 7100, x)) * (16 * Math.sin(x / 140) + 8 * Math.sin(x / 47 + 2));
+}
+
+// where the figure is along the ground
+function fx(t) {
+  if (t < 19.9) return 10;
+  if (t < 25.6) return lerp(10, 750, ss(19.9, 25.6, t));
+  if (t < 31.9) return 750;
+  if (t < 42.6) { const u = (t - 31.9) / 10.7, a = .14; return lerp(750, 4800, u < a ? u * u / (a * (2 - a)) : (2 * u - a) / (2 - a)); }
+  if (t < 49.6) return lerp(4800, 6300, (t - 42.6) / 7);
+  if (t < 52.9) return lerp(6300, 7000, (t - 49.6) / 3.3);
+  return lerp(7000, 8300, (t - 52.9) / 7.1);
+}
+const storm = t => ss(42.0, 43.8, t) * (1 - ss(49.0, 51.2, t));
+const dayCycle = t => (t - 35.0) / 6.6 * 3;                               // three days pass during "the long hours"
+const day = t => (t > 35 && t < 41.6) ? Math.pow(Math.sin(Math.PI * dayCycle(t)), 2) : 0;
+
+// ---------------------------------------------------------------- figure
+const TH = 27, SH = 27, TO = 36, UA = 18, FA = 17;
+const STAND = { lean: .03, tL: .16, kL: .1, tR: -.13, kR: .05, aL: .1, eL: .3, aR: -.14, eR: .28 };
+const SIT = { lean: .26, tL: 1.5, kL: 1.5, tR: 1.42, kR: 1.42, aL: .55, eL: .85, aR: .5, eR: .85 };
+function gait(ph, swing, kBase, kAmp, arm, elbow, lean) {
+  const th = 2 * Math.PI * ph;
+  const knee = o => kBase + kAmp * Math.pow(.5 + .5 * Math.cos(th + o + .7), 2);
+  return { lean, tL: swing * Math.sin(th), kL: knee(0), tR: swing * Math.sin(th + Math.PI), kR: knee(Math.PI), aL: -arm * Math.sin(th), eL: elbow, aR: arm * Math.sin(th), eR: elbow };
+}
+const blend = (p, q, u) => Object.fromEntries(Object.keys(p).map(k => [k, lerp(p[k], q[k], u)]));
+
+function figure(t) {
+  const standU = ss(10.5, 11.7, t), sitU = 1 - standU;
+  const x = t < 19.9 ? lerp(-22, 10, standU) : fx(t);
+  const speed = (fx(t + .02) - fx(t - .02)) / .04;
+  const slope = -(ground(x + 20) - ground(x - 20)) / 40;
+  let pose = STAND;
+  if (t < 28) pose = blend(STAND, gait((x - 10) / 92, .4, .08, .55, .4, .25, .05), clamp(speed / 90));
+  else {
+    const ph = x < 4800 ? (x - 750) / 240 : x < 6300 ? 4050 / 240 + (x - 4800) / 170 : 4050 / 240 + 1500 / 170 + (x - 6300) / 210;
+    pose = blend(STAND, gait(ph, .78, .25, 1.25, .85, 1.45, .2 + .2 * storm(t) + .14 * slope), clamp(speed / 140));
+  }
+  const reach = ss(13.4, 15.0, t) * (1 - ss(19.2, 20.2, t));
+  pose = blend(pose, { ...pose, aL: 1.25, eL: .35, lean: .08 }, reach);
+  pose = blend(pose, { ...SIT, lean: lerp(.3, .06, ss(9.5, 10.4, t)) }, sitU);
+  const foot = (a, k) => [TH * Math.sin(a) + SH * Math.sin(a - k), TH * Math.cos(a) + SH * Math.cos(a - k)];
+  const fL = foot(pose.tL, pose.kL), fR = foot(pose.tR, pose.kR);
+  const hipStand = Math.min(ground(x + fL[0]) - fL[1], ground(x + fR[0]) - fR[1]);   // lowest foot touches the ground
+  return { x, gy: ground(x), hipY: lerp(hipStand, -26, sitU), pose };
+}
+
+function drawFigure(f, z, color, glow) {
+  const p = f.pose, hx = f.x, hy = f.hipY;
+  const dir = a => [Math.sin(a), Math.cos(a)];
+  const tor = [Math.sin(p.lean), -Math.cos(p.lean)];
+  const sh = [hx + tor[0] * TO, hy + tor[1] * TO], head = [sh[0] + tor[0] * 16, sh[1] + tor[1] * 16];
+  const limb = (o, a1, l1, a2, l2) => { const d1 = dir(a1), m = [o[0] + d1[0] * l1, o[1] + d1[1] * l1], d2 = dir(a2); ctx.beginPath(); ctx.moveTo(o[0], o[1]); ctx.lineTo(m[0], m[1]); ctx.lineTo(m[0] + d2[0] * l2, m[1] + d2[1] * l2); ctx.stroke(); };
+  if (glow > 0) {
+    const g = ctx.createRadialGradient(hx, hy - 30, 0, hx, hy - 30, 150 / Math.min(1, z * 1.6));
+    g.addColorStop(0, rgb(EMBER, .5 * glow)); g.addColorStop(1, rgb(EMBER, 0));
+    ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = g; ctx.fillRect(hx - 800, hy - 800, 1600, 1600); ctx.globalCompositeOperation = 'source-over';
+  }
+  ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.lineWidth = Math.max(10, 2.6 / z);
+  ctx.strokeStyle = rgb(mix(color, GROUND, .42));                         // far-side limbs
+  limb([hx, hy], p.tR, TH, p.tR - p.kR, SH); limb(sh, p.aR, UA, p.aR + p.eR, FA);
+  ctx.strokeStyle = ctx.fillStyle = rgb(color);
+  ctx.beginPath(); ctx.moveTo(hx, hy); ctx.lineTo(sh[0], sh[1]); ctx.stroke();
+  ctx.beginPath(); ctx.arc(head[0], head[1], Math.max(10.5, 2.6 / z), 0, 7); ctx.fill();
+  limb([hx, hy], p.tL, TH, p.tL - p.kL, SH); limb(sh, p.aL, UA, p.aL + p.eL, FA);
+}
+
+// ---------------------------------------------------------------- the ember
+const ARC = [[7.3, -1150, -200], [8.1, -250, -570], [8.75, 330, -450], [9.5, 230, -220], [10.3, 85, -100]];
+function arc(t) {
+  let i = 0; while (i < ARC.length - 2 && t > ARC[i + 1][0]) i++;
+  const P = k => ARC[clamp(k, 0, ARC.length - 1)], p0 = P(i - 1), p1 = P(i), p2 = P(i + 1), p3 = P(i + 2);
+  const u = clamp((t - p1[0]) / (p2[0] - p1[0]));
+  const cr = k => .5 * (2 * p1[k] + (p2[k] - p0[k]) * u + (2 * p0[k] - 5 * p1[k] + 4 * p2[k] - p3[k]) * u * u + (3 * p1[k] - p0[k] - 3 * p2[k] + p3[k]) * u * u * u);
+  return [cr(1), cr(2)];
+}
+function ember(t) {
+  if (t < 10.3) return arc(t);
+  const f = figure(t), m = (p, q, u) => [lerp(p[0], q[0], u), lerp(p[1], q[1], u)];
+  let p = m([85, -100], [85 + 6 * Math.sin(t * 1.3), -100 + 7 * Math.sin(t * 1.9)], ss(10.3, 11.2, t));
+  p = m(p, [f.x + 150 + 25 * Math.sin(t * 1.7), f.gy - 125 + 22 * Math.sin(t * 2.3)], ss(19.9, 21.2, t));
+  const u = ss(25.7, 27.9, t);
+  p = m(p, [7000 + 4 * Math.sin(t * 1.1), ground(7000) - 70 + 6 * Math.sin(t * 1.6)], u);
+  p[1] -= 260 * Math.sin(Math.PI * u);
+  return m(p, [f.x + 4, f.hipY - 24], ss(52.4, 53.3, t));
+}
+
+// ---------------------------------------------------------------- camera
+const follow = (dx, dy, z) => t => { const f = figure(t); return { x: f.x + dx, y: f.gy + dy, z }; };
+const fixed = (x, y, z) => () => ({ x, y, z });
+const SHOTS = [
+  [0, fixed(130, -170, .96)], [7.6, fixed(130, -170, 1.0)], [10.6, fixed(70, -95, 1.55)], [19.6, fixed(70, -95, 1.66)],
+  [21.6, follow(170, -190, 1.05)], [25.4, follow(170, -190, 1.05)],
+  [27.9, fixed(3900, -640, .235)], [31.6, fixed(3960, -650, .245)],
+  [34.2, follow(160, -130, .85)], [41.8, follow(160, -130, .8)],
+  [43.6, follow(70, -95, 1.35)], [48.8, follow(70, -95, 1.35)],
+  [51.5, follow(260, -210, .72)], [53.6, follow(200, -200, .6)],
+  [57.0, fixed(4700, -780, .2)], [60.1, fixed(4760, -790, .206)],
+];
+function camera(t) {
+  let i = 0; while (i < SHOTS.length - 2 && t >= SHOTS[i + 1][0]) i++;
+  const a = SHOTS[i][1](t), b = SHOTS[i + 1][1](t), u = ss(SHOTS[i][0], SHOTS[i + 1][0], t);
+  return { x: lerp(a.x, b.x, u), y: lerp(a.y, b.y, u), z: Math.exp(lerp(Math.log(a.z), Math.log(b.z), u)) };
+}
+
+// ---------------------------------------------------------------- sky furniture
+const SKY = [[0, '#070B1C', '#18224A'], [19, '#070B1C', '#1A2450'], [25, '#080D26', '#222C62'], [28, '#0A1030', '#3A2F66'], [34.5, '#0A1030', '#33306A'],
+  [42, '#0B0F22', '#2A2E55'], [44, '#0A0D16', '#2A3140'], [49.2, '#0A0D16', '#2A3140'], [52.5, '#1C2857', '#EE8590'], [55.5, '#2C3B74', '#FF9A8E'], [60, '#3A4A85', '#FFB3A0']]
+  .map(([t, a, b]) => [t, hex(a), hex(b)]);
+function sky(t) {
+  let i = 0; while (i < SKY.length - 2 && t >= SKY[i + 1][0]) i++;
+  const u = ss(SKY[i][0], SKY[i + 1][0], t), d = day(t) * .92;
+  return [mix(mix(SKY[i][1], SKY[i + 1][1], u), hex('#24467E'), d), mix(mix(SKY[i][2], SKY[i + 1][2], u), hex('#D99BB4'), d)];
+}
+const r1 = rng(7);
+const STARS = Array.from({ length: 320 }, () => ({ x: r1() * W, y: r1() * 780, r: .7 + r1() * r1() * 2.2, ph: r1() * 7, rank: r1() }));
+// a few constellations: chains of neighbouring stars that get joined up while the figure explores
+const CHAINS = [];
+{ const used = new Set(), cand = STARS.map((s, i) => i).filter(i => STARS[i].y < 560 && STARS[i].y > 120 && STARS[i].x > 200);
+  for (const start of [cand[3], cand[41], cand[77], cand[120], cand[160]]) {
+    if (start === undefined) continue;
+    const chain = [start]; used.add(start);
+    for (let n = 0; n < 4; n++) {
+      const a = STARS[chain[chain.length - 1]]; let best = -1, bd = 1e9;
+      for (const i of cand) { if (used.has(i)) continue; const d = Math.hypot(STARS[i].x - a.x, STARS[i].y - a.y); if (d > 70 && d < 230 && d < bd) { bd = d; best = i; } }
+      if (best < 0) break; chain.push(best); used.add(best);
+    }
+    if (chain.length > 2) { CHAINS.push(chain); chain.forEach(i => { STARS[i].rank *= .4; STARS[i].r = Math.max(STARS[i].r, 1.9); }); }
+  } }
+const r2 = rng(21);
+const RAIN = Array.from({ length: 300 }, () => ({ x: r2() * (W + 600), y: r2() * (H + 200), v: 1500 + r2() * 900, len: 24 + r2() * 26 }));
+const hills = (x, k) => .5 * Math.sin(x / (210 * k)) + .3 * Math.sin(x / (97 * k) + 1.7) + .2 * Math.sin(x / (41 * k) + .4);
+
+// ---------------------------------------------------------------- draw one instant
+function draw(t) {
+  const cam = camera(t), z = cam.z, f = figure(t), [top, bot] = sky(t), st = storm(t), dy = day(t);
+  const sx = x => W / 2 + (x - cam.x) * z, sy = y => AY + (y - cam.y) * z;
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+  let g = ctx.createLinearGradient(0, 0, 0, 920);
+  g.addColorStop(0, rgb(top)); g.addColorStop(.6, rgb(mix(top, bot, .45))); g.addColorStop(1, rgb(bot));
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+
+  const disc = (x, y, r, col, halo, a) => {
+    ctx.globalCompositeOperation = 'lighter';
+    const gg = ctx.createRadialGradient(x, y, 0, x, y, halo); gg.addColorStop(0, rgb(col, .55 * a)); gg.addColorStop(.35, rgb(col, .16 * a)); gg.addColorStop(1, rgb(col, 0));
+    ctx.fillStyle = gg; ctx.fillRect(x - halo, y - halo, halo * 2, halo * 2);
+    ctx.globalCompositeOperation = 'source-over'; ctx.fillStyle = rgb(col, a); ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill();
+  };
+  if (dy > 0) { const fr = ((dayCycle(t) % 1) + 1) % 1; disc(W * (.04 + .92 * fr), 840 - 600 * Math.sin(Math.PI * fr), 40, [255, 226, 190], 420, clamp(dy * 1.6)); }
+  const dawn = ss(50.5, 56, t);
+  if (dawn > 0) disc(sx(8700), sy(-1400 + 90 - dawn * 330), Math.max(46, 110 * z), [255, 224, 190], 620, dawn);
+
+  // stars and constellations
+  const starA = (1 - dy) * (1 - .85 * st) * (1 - .9 * ss(51, 55, t)), seen = lerp(.28, 1, ss(20.6, 25.2, t)), drift = cam.x * .02;
+  const sp = s => [((s.x - drift) % W + W) % W, s.y + cam.y * .012];
+  if (starA > .01) {
+    ctx.fillStyle = rgb(INK);
+    for (const s of STARS) {
+      const a = clamp((seen - s.rank) / .05) * starA * (.55 + .45 * Math.sin(t * 1.6 + s.ph));
+      if (a <= .01) continue; const [x, y] = sp(s); ctx.globalAlpha = a; ctx.beginPath(); ctx.arc(x, y, s.r, 0, 7); ctx.fill();
+    }
+    const lineA = starA * (1 - ss(26.2, 27.6, t));
+    if (lineA > .01) {
+      ctx.strokeStyle = rgb(INK); ctx.lineWidth = 1.4;
+      CHAINS.forEach((chain, c) => chain.slice(1).forEach((id, k) => {
+        const u = ss(0, .55, (t - 22.0 - c * .45 - k * .5));
+        if (u <= 0) return; const [x1, y1] = sp(STARS[chain[k]]), [x2, y2] = sp(STARS[id]);
+        if (Math.abs(x2 - x1) > 400) return;
+        ctx.globalAlpha = .4 * lineA; ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(lerp(x1, x2, u), lerp(y1, y2, u)); ctx.stroke();
+      }));
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  // far hills, two layers that slide slower than the foreground
+  [[.06, 790, 120, 1.6, .4], [.16, 835, 90, 1, .68]].forEach(([par, base, amp, k, shade]) => {
+    ctx.fillStyle = rgb(mix(bot, GROUND, shade)); ctx.beginPath(); ctx.moveTo(0, H);
+    for (let x = 0; x <= W; x += 8) ctx.lineTo(x, base - cam.y * par * z - amp * (.5 + .5 * hills(x + cam.x * par, k)));
+    ctx.lineTo(W, H); ctx.fill();
+  });
+
+  // the ground the figure travels over, with the stand they start on
+  ctx.fillStyle = rgb(GROUND); ctx.beginPath(); ctx.moveTo(0, H);
+  for (let x = 0; x <= W; x += 4) ctx.lineTo(x, sy(ground(cam.x + (x - W / 2) / z)));
+  ctx.lineTo(W, H); ctx.fill();
+  ctx.strokeStyle = rgb(mix(INK, bot, .5), .22); ctx.lineWidth = 1.5; ctx.beginPath();
+  for (let x = 0; x <= W; x += 4) { const y = sy(ground(cam.x + (x - W / 2) / z)); x ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }
+  ctx.stroke();
+  ctx.fillStyle = rgb(GROUND); ctx.beginPath(); ctx.moveTo(sx(-10), sy(2));
+  for (let i = 0; i < 9; i++) { ctx.lineTo(sx(-10 - 60 * i), sy(-26 * (i + 1))); ctx.lineTo(sx(-70 - 60 * i), sy(-26 * (i + 1))); }
+  ctx.lineTo(sx(-9000), sy(-234)); ctx.lineTo(sx(-9000), sy(2)); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(sx(-10), sy(0));
+  for (let i = 0; i < 9; i++) { ctx.lineTo(sx(-10 - 60 * i), sy(-26 * (i + 1))); ctx.lineTo(sx(-70 - 60 * i), sy(-26 * (i + 1))); }
+  ctx.lineTo(sx(-9000), sy(-234)); ctx.stroke();
+
+  // the path already run, lit at the end
+  const trail = ss(53.0, 56.2, t);
+  if (trail > 0) {
+    ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.shadowColor = rgb(EMBER, .9); ctx.shadowBlur = 22;
+    ctx.strokeStyle = rgb(mix(EMBER, WARM, .35), .9 * trail); ctx.lineWidth = Math.max(3, 5 * z); ctx.lineCap = 'round'; ctx.beginPath();
+    let on = false;
+    for (let x = 0; x <= W; x += 4) { const wx = cam.x + (x - W / 2) / z; if (wx < 10 || wx > f.x - 6) continue; const y = sy(ground(wx)) - 1; on ? ctx.lineTo(x, y) : ctx.moveTo(x, y); on = true; }
+    ctx.stroke(); ctx.restore();
+  }
+
+  const e = ember(t), ex = sx(e[0]), ey = sy(e[1]);
+
+  // the gap, measured
+  const gap = ss(28.3, 29.0, t) * (1 - ss(31.9, 32.6, t));
+  if (gap > 0) {
+    ctx.globalAlpha = gap; ctx.strokeStyle = rgb(INK, .5); ctx.lineWidth = 2; ctx.setLineDash([3, 13]); ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(sx(f.x) + 26, sy(f.gy - 90)); ctx.lineTo(ex - 28, ey + 12); ctx.stroke(); ctx.setLineDash([]);
+    ctx.font = '500 27px "Avenir Next"'; ctx.fillStyle = rgb(INK, .8); ctx.textAlign = 'left'; ctx.fillText('where you are', sx(f.x) - 60, sy(f.gy) + 52);
+    ctx.textAlign = 'right'; ctx.fillText('where you’d like to be', ex - 44, ey - 34); ctx.globalAlpha = 1;
+  }
+
+  // ember: white while it is still a ball, then warm
+  const eA = ss(7.3, 7.5, t) * (1 - ss(53.0, 53.5, t));
+  if (eA > 0) {
+    const col = mix([255, 255, 255], EMBER, ss(8.4, 9.4, t)), bloomT = t - A(15.38), bloom = bloomT > 0 ? Math.exp(-bloomT / 1.3) : 0;
+    const zz = clamp(z, .62, 1.7), breathe = 1 + .1 * Math.sin(t * 2.4);
+    for (let k = 14; k >= 1; k--) { const p = ember(t - k * .035); ctx.fillStyle = rgb(col, eA * .22 * (1 - k / 15)); ctx.beginPath(); ctx.arc(sx(p[0]), sy(p[1]), Math.max(1.6, 5 * zz * (1 - k / 18)), 0, 7); ctx.fill(); }
+    disc(ex, ey, 6.5 * zz, mix(col, [255, 255, 255], .45), 120 * zz * breathe * (1 + 2.2 * bloom), eA);
+    if (bloom > .02) for (const d of [0, .45]) { const rr = (bloomT - d) * 250 * z; if (rr <= 0) continue; ctx.strokeStyle = rgb(EMBER, .55 * Math.exp(-(bloomT - d) / .9)); ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(ex, ey, rr, 0, 7); ctx.stroke(); }
+  }
+
+  // the figure, lit a little by the ember when it is close and fully once they join
+  const near = clamp(1 - Math.hypot(e[0] - f.x, e[1] - f.hipY) / 330) * eA, joined = ss(52.8, 53.8, t);
+  ctx.setTransform(z, 0, 0, z, W / 2 - cam.x * z, AY - cam.y * z);
+  drawFigure(f, z, mix(mix(INK, WARM, .35 * near), [255, 214, 184], joined), Math.max(.3 * near, joined, .4 * clamp((.5 - z) / .25)));
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+  if (st > .01) {
+    ctx.strokeStyle = rgb([200, 212, 235], .46 * st); ctx.lineWidth = 1.8; ctx.lineCap = 'butt'; ctx.beginPath();
+    for (const d of RAIN) {
+      const y = (d.y + d.v * t) % (H + 200) - 100, x = (((d.x - .38 * d.v * t) % (W + 600)) + W + 600) % (W + 600) - 300;
+      ctx.moveTo(x, y); ctx.lineTo(x + .38 * d.len, y - d.len);
+    }
+    ctx.stroke();
+  }
+
+  g = ctx.createRadialGradient(W / 2, H / 2, 520, W / 2, H / 2, 1180);
+  g.addColorStop(0, 'rgba(4,6,14,0)'); g.addColorStop(1, 'rgba(4,6,14,.42)'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  const fade = Math.max(1 - ss(0, 1.1, t), ss(59.4, 60, t));
+  if (fade > 0) { ctx.fillStyle = `rgba(7,11,28,${fade})`; ctx.fillRect(0, 0, W, H); }
+}
+
+// ---------------------------------------------------------------- type, timed to the narration
+const tl = gsap.timeline({ paused: true, defaults: { ease: 'power2.out' } });
+const show = (sel, t, d = .6, y = 24) => { gsap.set(sel, { y }); tl.to(sel, { opacity: 1, y: 0, duration: d }, t); };
+const hide = (sel, t, d = .4) => tl.to(sel, { opacity: 0, duration: d, ease: 'power1.in' }, t);
+function spoken(sel, items) {
+  const el = $(sel);
+  items.forEach(([text, t, cls]) => {
+    const s = document.createElement('span'); s.className = 'w' + (cls ? ' ' + cls : ''); s.textContent = text + ' '; el.appendChild(s);
+    gsap.set(s, { y: 18 }); tl.to(s, { opacity: 1, y: 0, duration: .32 }, A(t) - .06);
+  });
+}
+
+show('#year', A(.3), .8, 30); show('#place', A(2.9));
+hide('#year', A(5.6), .5); hide('#place', A(5.6), .5);
+spoken('#quote', [['I', 9.14], ['could', 9.22], ['try', 9.38], ['writing', 9.6], ['a', 9.96], ['novel.', 10.14]]);
+show('#quoteBy', A(10.45), .4, 0);
+hide('#quote', A(10.95), .3); hide('#quoteBy', A(10.95), .3);
+show('#byline', A(11.4), .5, 0); show('#thesis', A(12.1));
+hide('#byline', A(15.0), .3); hide('#thesis', A(15.0), .3);
+
+const stages = [['#s1', 15.38, 15.9, 18.1], ['#s2', 18.9, 21.9, 24.1], ['#s3', 25.7, 26.2, 32.5], ['#s4', 35.5, 37.3, 40.8], ['#s5', 42.0, 42.9, 47.7]];
+const railIn = [15.38, 18.9, 25.7, 33.0, 42.0];
+show('#rail', A(14.2), .6, -12);
+$$('#rail .item').forEach((it, i) => {
+  tl.to(it, { color: '#FF7A4D', duration: .4 }, A(railIn[i]));
+  if (i < 4) tl.to(it, { color: '#F4F1EA', duration: .4 }, A(railIn[i + 1]));
+  tl.to('#rail .fill', { width: (i * 20 + 12) + '%', duration: .8, ease: 'power2.inOut' }, A(railIn[i]));
+});
+hide('#rail', A(47.7));
+stages.forEach(([id, tin, tsub, tout]) => {
+  show(id + ' .num', A(tin), .4, 0); show(id + ' .title', A(tin), .6, 30); show(id + ' .sub', A(tsub), .6, 14);
+  hide(id + ' > *', A(tout), .35);
+});
+
+const n = { v: 0 }, nEl = $('#count .n');
+show('#count', A(45.3), .5, 16);
+tl.to(n, { v: 23, duration: 1.0, onUpdate: () => { nEl.textContent = Math.round(n.v); } }, A(45.4));
+hide('#count', A(47.7), .35);
+
+spoken('#close1', [['The', 48.7], ['real', 48.9], ['prize', 49.2], ['was', 49.56], ['never', 49.88], ['the', 50.22], ['finish', 50.48], ['line.', 50.74]]);
+tl.to('#close1', { opacity: .7, duration: .5 }, A(51.4));
+spoken('#close2', [["It's", 51.64], ['the', 51.9, 'hl'], ['person', 52.04, 'hl'], ['you', 52.34, 'hl'], ['become', 52.58, 'hl'], ['on', 52.88], ['the', 53.04], ['way', 53.14], ['there.', 53.3]]);
+hide('#close1', A(54.6), .5); hide('#close2', A(54.6), .5);
+
+show('#endLabel', 57.0, .5, 0);
+const list = $('#endList');
+['Enchantment', 'Curiosity', 'The gap', 'Mastery', 'Endurance'].forEach((name, i) => {
+  if (i) { const s = document.createElement('span'); s.className = 'sep'; s.textContent = '/'; list.appendChild(s); tl.to(s, { opacity: 1, duration: .3 }, 57.2 + i * .16); }
+  const s = document.createElement('span'); s.textContent = name; list.appendChild(s);
+  gsap.set(s, { y: 14 }); tl.to(s, { opacity: 1, y: 0, duration: .4 }, 57.2 + i * .16);
+});
+show('#credits', 57.6, .6, 0);
+tl.to(['#endLabel', '#endList', '#credits'], { opacity: 0, duration: .45, ease: 'power1.in' }, 59.4);
+tl.set({}, {}, 60);
+
+// captions, hidden while the large type already shows the spoken words
+const MUTE = [[9.0, 11.2], [48.2, 54.6]];
+const chunks = [];
+(window.WORDS || []).forEach(w => {
+  const c = chunks[chunks.length - 1], chars = c ? c.reduce((k, x) => k + x.w.length + 1, 0) : 0;
+  if (!c || /[.?!]$/.test(c[c.length - 1].w) || (/[,:]$/.test(c[c.length - 1].w) && c.length >= 3) || chars + w.w.length > 50) chunks.push([w]); else c.push(w);
+});
+const cap = $('#cap');
+function caption(t) {
+  const a = t - L;
+  const i = chunks.findIndex((c, k) => a >= c[0].s - .1 && a < Math.min(c[c.length - 1].e + .7, k + 1 < chunks.length ? chunks[k + 1][0].s - .1 : 1e9));
+  if (i < 0 || MUTE.some(([s, e]) => a >= s && a < e)) { cap.innerHTML = ''; return; }
+  cap.innerHTML = chunks[i].map(w => `<span class="${a >= w.s - .05 ? '' : 'u'}">${w.w}</span>`).join(' ');
+}
+
+window.seek = t => { tl.time(t); caption(t); draw(t); };
+window.seek(0);
+window.ready = true;
+</script>
+</body>
+</html>

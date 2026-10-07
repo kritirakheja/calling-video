@@ -1,0 +1,9 @@
+.venv/
+node_modules/
+frames/
+out/*
+!out/calling.mp4
+audio/voice.wav
+audio/mix.wav
+audio/music.wav
+.DS_Store
